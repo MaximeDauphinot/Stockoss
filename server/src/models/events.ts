@@ -23,6 +23,16 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
+  comments: [
+    {
+      auteur: {
+        type: String,
+      },
+      commentaire: {
+        type: String,
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model("Events", eventSchema);

@@ -4,42 +4,9 @@ import { EventDatas } from "../types/event";
 
 const Events = require("../models/events");
 
-const events = [
-  {
-    title: "testEvent",
-  },
-  {
-    title: "testEvent",
-  },
-  {
-    title: "testEvent",
-  },
-  {
-    title: "testEvent",
-  },
-  {
-    title: "testEvent",
-  },
-  {
-    title: "testEvent",
-  },
-  {
-    title: "testEvent",
-  },
-  {
-    title: "testEvent",
-  },
-  {
-    title: "testEvent",
-  },
-  {
-    title: "testEvent",
-  },
-];
-
 exports.getEvents = (req: Request, res: Response, next: NextFunction) => {
   Events.find()
-    .then((events: EventDatas) => {
+    .then((events: EventDatas[]) => {
       res.send(events);
     })
     .catch((err: any) => {
@@ -72,10 +39,36 @@ exports.addEvent = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-exports.getOneEvent = (req: Request, res: Response, next: NextFunction) => {
-  res.send({
-    path: "/a-propos",
-  });
+exports.addComment = (req: Request, res: Response, next: NextFunction) => {
+  const { auteur, commentaire } = req.body;
+  const id = req.params.id;
+
+  console.log(req.body);
+
+  Events.findById(id)
+    .then((event: any) => {
+      event.comments.push({
+        auteur: auteur,
+        commentaire: commentaire,
+      });
+
+      return event.save();
+    })
+    .then((result: any) => {
+      console.log("UPDATED PRODUCT!");
+    })
+    .catch((err: any) => {
+      console.log(err);
+    });
 };
 
-// http://localhost:5000/
+exports.getOneEvent = (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.id;
+  Events.findById(id)
+    .then((event: EventDatas) => {
+      res.send(event);
+    })
+    .catch((err: any) => {
+      console.log(err);
+    });
+};

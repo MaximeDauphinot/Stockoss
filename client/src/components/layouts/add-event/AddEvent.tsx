@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Fab from "@mui/material/Fab";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import { EventDatas } from "../../../types/event";
 
 const useStyle = makeStyles({
@@ -35,16 +37,24 @@ const useStyle = makeStyles({
 
 export const AddEvent: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<any>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [datas, setDatas] = useState<EventDatas>({
     title: "",
     description: "",
     email: "",
-    date: null,
+    date: new Date(),
     cover: "",
+    comments: [
+      {
+        auteur: "",
+        commentaire: "",
+      },
+    ],
   });
   const classes = useStyle();
 
   const sendData = () => {
+    setIsLoading(true);
     fetch("http://localhost:5000/add-event", {
       headers: {
         "Content-Type": "application/json",
@@ -62,12 +72,16 @@ export const AddEvent: React.FC = () => {
       .then((data) => {
         console.log("done");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const onFileSubmit = (e: any) => {
     e.preventDefault();
     sendData();
+    remove();
+    setIsLoading(false);
   };
 
   const photoUpload = (e: any) => {
@@ -98,6 +112,12 @@ export const AddEvent: React.FC = () => {
       email: "",
       date: new Date(),
       cover: "",
+      comments: [
+        {
+          auteur: "",
+          commentaire: "",
+        },
+      ],
     });
   };
 
@@ -117,7 +137,7 @@ export const AddEvent: React.FC = () => {
         </Typography>
         <Box
           component="form"
-          noValidate
+          // noValidate
           onSubmit={(e: any) => onFileSubmit(e)}
           sx={{ mt: 3 }}
         >
@@ -205,6 +225,7 @@ export const AddEvent: React.FC = () => {
                     date: new Date(e.target.value),
                   }))
                 }
+                // value={datas.date}
               />
               {imagePreview === "" ? null : (
                 <img
@@ -227,6 +248,7 @@ export const AddEvent: React.FC = () => {
           >
             Reset all
           </Button>
+          {isLoading ? <CircularProgress /> : null}
         </Box>
       </Box>
     </Container>

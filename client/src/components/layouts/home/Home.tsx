@@ -10,7 +10,10 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import { GetEventDatas } from "../../../types/event";
+import { formatDate } from "../../../utils/dateFormat";
 
 const useStyles = makeStyles({
   root: {
@@ -19,22 +22,32 @@ const useStyles = makeStyles({
   logo: {
     maxWidth: "150px",
   },
+  link: {
+    textDecoration: "none",
+  },
 });
 
 export const Home: React.FC = () => {
   const [datas, setDatas] = useState<GetEventDatas[]>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const classes = useStyles();
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("http://localhost:5000/events")
       .then((response) => response.json())
       .then((response) => {
+        setIsLoading(false);
         setDatas(response);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setIsLoading(false);
+        console.log(error);
+      });
   }, []);
 
   if (!datas) return null;
+  if (isLoading) return <CircularProgress sx={{ mt: 10 }} />;
 
   return (
     <Container component="main" maxWidth="md" className={classes.root}>
@@ -56,21 +69,27 @@ export const Home: React.FC = () => {
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
-        {Array.from(Array(6)).map((_, index) => (
+        {datas.map((data, index) => (
           <Grid item xs={2} sm={4} md={4} key={index}>
             <Card sx={{ maxWidth: 345 }}>
-              <Link to={"/event/" + datas[0]._id}>
-                <CardHeader title={datas[0].title} subheader={datas[0].date} />
+              <Link to={`/event/${data._id}`} className={classes.link}>
+                <CardHeader
+                  title={data.title}
+                  subheader={formatDate(data.date)}
+                  sx={{
+                    color: "rgba(42,73,82,1)",
+                  }}
+                />
               </Link>
               <CardMedia
                 component="img"
                 height="194"
-                image={datas[0].cover}
-                alt={datas[0].title}
+                image={data.cover}
+                alt={data.title}
               />
               <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                  {datas[0].description}
+                  {data.description}
                 </Typography>
               </CardContent>
             </Card>

@@ -36,13 +36,15 @@ export const Header: React.FC = () => {
         position="static"
         style={{ flexDirection: "row", backgroundColor: "rgba(42,73,82,1)" }}
       >
-        <img
-          alt={"Logo"}
-          className={classes.logo}
-          src={
-            "//d9hhrg4mnvzow.cloudfront.net/solutions.stockoss.com/fr/offre/5dd4344a-200416-stockoss-logo-v02-04_105903p000000000000028.png"
-          }
-        />
+        <Link to={"/"}>
+          <img
+            alt={"Logo"}
+            className={classes.logo}
+            src={
+              "//d9hhrg4mnvzow.cloudfront.net/solutions.stockoss.com/fr/offre/5dd4344a-200416-stockoss-logo-v02-04_105903p000000000000028.png"
+            }
+          />
+        </Link>
         {allLinks.map((link, i) => (
           <Link key={i} to={link.path} className={classes.link}>
             {link.title}

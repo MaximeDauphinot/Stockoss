@@ -2,6 +2,12 @@ export type EventDatas = {
   title: string;
   description: string;
   email: string;
-  date: Date | null;
+  date: Date;
   cover: string;
+  comments: [
+    {
+      auteur: string;
+      commentaire: string;
+    }
+  ];
 };
