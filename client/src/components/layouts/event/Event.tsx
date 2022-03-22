@@ -126,7 +126,6 @@ export const Event: React.FC = () => {
           </CardContent>
           <Box
             component="form"
-            // noValidate
             onSubmit={(e: any) => onFileSubmit(e)}
             sx={{
               mb: 3,

@@ -43,8 +43,6 @@ exports.addComment = (req: Request, res: Response, next: NextFunction) => {
   const { auteur, commentaire } = req.body;
   const id = req.params.id;
 
-  console.log(req.body);
-
   Events.findById(id)
     .then((event: any) => {
       event.comments.push({

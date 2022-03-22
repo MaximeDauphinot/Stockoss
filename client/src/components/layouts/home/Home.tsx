@@ -11,6 +11,9 @@ import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CircularProgress from "@mui/material/CircularProgress";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { GetEventDatas } from "../../../types/event";
 import { formatDate } from "../../../utils/dateFormat";
@@ -55,9 +58,10 @@ export const Home: React.FC = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           mb: 3,
+          flexDirection: "row",
+          justifyContent: "center",
         }}
       >
         <Typography component="h1" variant="h5">
@@ -83,11 +87,11 @@ export const Home: React.FC = () => {
               </Link>
               <CardMedia
                 component="img"
-                height="194"
+                height="200"
                 image={data.cover}
                 alt={data.title}
               />
-              <CardContent>
+              <CardContent sx={{ minHeight: "100px" }}>
                 <Typography variant="body2" color="text.secondary">
                   {data.description}
                 </Typography>
