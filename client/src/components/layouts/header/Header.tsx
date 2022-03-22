@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const Header: React.FC = ({ children }) => {
+export const Header: React.FC = () => {
   const classes = useStyles();
 
   return (
@@ -44,7 +44,7 @@ export const Header: React.FC = ({ children }) => {
           }
         />
         {allLinks.map((link, i) => (
-          <Link to={link.path} className={classes.link}>
+          <Link key={i} to={link.path} className={classes.link}>
             {link.title}
           </Link>
         ))}
